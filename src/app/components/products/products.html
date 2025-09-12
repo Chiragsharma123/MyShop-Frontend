@@ -1,0 +1,30 @@
+<div class="flex flex-wrap justify-evenly" *ngIf="!isViewingDetails">
+    @for (product of products; track product.id) {                                                                                                                                           
+    <div class="mx-4 p-3 mt-4 mb-4 flex flex-col rounded-xl shadow-2xl w-64 bg-white dark:bg-gray-800 dark:text-white border-2 border-gray-300 dark:border-gray-700" (click)="viewProductDetails(product.id)">
+        <div class="overflow-hidden rounded-md">
+            <img class="rounded-md mx-auto transition-transform duration-300 ease-in-out transform hover:scale-105" [src]="product.image" alt="{{ product.name }}"/>
+        </div>
+        <div class="p-4 text-center">
+        <h5 class="font-semibold"><a class=" hover:text-black no-underline" href="#" >{{ product.name }}</a></h5>
+         <p class="text-base font-normal mt-1">{{ product.price |currency:'INR' }}</p>
+         <p >{{ product.description }}</p>
+    </div>
+    </div>
+}
+</div>
+<div *ngIf="isViewingDetails">
+<div class="flex flex-wrap justify-evenly" >
+    <div *ngIf="productDetails">
+        <h2 class="text-2xl font-bold mb-4">{{ productDetails.name }}</h2>
+        <img class="w-64 h-64 object-cover mb-4" [src]="productDetails.image" alt="{{ productDetails.name }}"/>
+        <p class="text-lg font-semibold mb-2">Price: {{ productDetails.price | currency }}</p>
+        <p class="mb-4">{{ productDetails.description }}</p>
+    </div>                    
+    <div *ngIf="!productDetails">
+        <p>No product details available.</p>
+    </div>
+</div>
+<div class="text-center mt-4">
+    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="isViewingDetails = false">Back to Products</button>
+</div>
+</div>

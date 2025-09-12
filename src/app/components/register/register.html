@@ -1,0 +1,75 @@
+<div class="max-w-xl mx-auto mt-10 p-6 bg-white shadow-2xl rounded-xl dark:bg-gray-800 dark:text-white border-2 border-gray-300 dark:border-gray-700">
+  <h2 class="text-2xl font-bold mb-4">Register</h2>
+
+  <form [formGroup]="registerationForm" (ngSubmit)="onSubmit()">
+
+    <div class="mb-4">
+      <label class="text-base">Role</label>
+      <select formControlName="role" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white">
+        <option class="bg-white text-black text-lg dark:bg-gray-800 dark:text-white" value="" disabled>Select Role</option>
+        <option *ngFor="let role of roles" [value]="role" class="bg-white text-black dark:bg-gray-800 dark:text-white">{{ role | titlecase }}</option>
+      </select>
+    </div>
+
+    <div *ngIf="registerationForm.get('role')?.value === 'user'"  class="bg-white text-black dark:bg-gray-800 dark:text-white">
+      <div class="mb-4">
+        <label>Username</label>
+        <input type="text" formControlName="username" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="create username"/>
+      </div>
+      <div class="mb-4">
+        <label>Password</label>
+        <input type="password" formControlName="password" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="create password" />
+      </div>
+      <div class="mb-4">
+        <label>Address</label>
+        <input type="text" formControlName="address" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="Provide address"/>
+      </div>
+      <div class="mb-4">
+        <label>Phone Number</label>
+        <input type="text" formControlName="phoneNumber" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="phoneNumber" />
+      </div>
+    </div>
+
+
+    <div *ngIf="registerationForm.get('role')?.value === 'seller'" class="bg-white text-black dark:bg-gray-800 dark:text-white">
+      <div class="mb-4">
+        <label>Email</label>
+        <input type="email" formControlName="email" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="enter email address"/>
+      </div>
+      <div class="mb-4">
+        <label>Password</label>
+        <input type="password" formControlName="password" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="create password" />
+      </div>
+      <div class="mb-4">
+        <label>Brand Name</label>
+        <input type="text" formControlName="brandName" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="Enter Brand Name"/>
+      </div>
+      <div class="mb-4">
+        <label>Address</label>
+        <input type="text" formControlName="address" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="Enter address" />
+      </div>
+      <div class="mb-4">
+        <label>Phone Number</label>
+        <input type="text" formControlName="phoneNumber" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="Enter address"/>
+      </div>
+      <div class="mb-4">
+        <label>Brand Logo</label>
+        <input type="file" formControlName="brandLogo" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="Provide logo in file format"/>
+      </div>
+
+      <div class="mb-4">
+        <label class="mx-4">Delivery Pincodes</label>
+        <div *ngFor="let pinCtrl of DeliveryPinCodes.controls; let i = index" class="flex gap-2 mt-2 ">
+          <input [formControlName]="i" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="Provide DeliveryPinCodes" />
+          <button type="button" (click)="removeDeliveryPinCodes(i)" class="bg-red-500 text-white px-2 rounded">Remove</button>
+        </div>
+        <button type="button" (click)="addDeliveryPinCodes('')" class="mt-2 bg-blue-500 text-white px-2 rounded">Add Pincode</button>
+      </div>
+    </div>
+
+    <button type="submit" class="w-full bg-green-600 text-white p-2 rounded-lg hover:bg-green-700">
+      Register
+    </button>
+  </form>
+</div>
+

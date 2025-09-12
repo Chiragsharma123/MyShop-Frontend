@@ -1,0 +1,42 @@
+<div class="w-full shadow-lg shadow-gray-500/50 bg-gray-900">
+  <div class="flex  items-center ">
+    <div class="text-white ml-2 p-3 w-[23%] gap-8 flex items-center h-full">
+      <h1 class="text-xl font-bold gap-5">MyShop</h1>
+       <div class="text-white mx-4 flex items-center gap-3">
+       <fa-icon [icon]="faHome" class="text-[1.5em] hover:scale-110 transition-transform" routerLink="/home"></fa-icon>
+      </div>
+    </div>
+    <div class="p-0 my-4 w-[50%] h-[2.5rem] bg-white flex items-center ">
+      <input class="w-[90%] h-full inline-block border-none outline-none px-3" placeholder="Search...">
+      <button class="w-[10%] h-10 border-none bg-gray-300 flex justify-center items-center"><fa-icon [icon]="faSearch"></fa-icon></button>
+    </div>
+  <div class="flex items-center w-[27%] gap-8 justify-end h-full pr-4 ">
+     <div class="flex items-center gap-3 text-orange-500">
+      <fa-icon [icon]="faCart" class="text-[1.3em] hover:scale-110 transition-transform"></fa-icon> 
+    </div>
+    <div *ngIf="!isLoggedIn" class="flex items-center gap-3 text-white">  
+      <fa-icon [icon]="faUser" class="text-[1.3em]"></fa-icon>
+      <h5>
+        <a routerLink="/login" class="text-white no-underline hover:underline">Sign in</a>
+      </h5>
+      <span>/</span>
+      <h5>
+        <a routerLink="/register"  class="text-white no-underline hover:underline" >Register</a>
+      </h5>
+    </div>
+    <div *ngIf="isLoggedIn" class="flex items-center gap-3 text-white">
+       <fa-icon [icon]="faUser" class="text-[1.3em]"></fa-icon>
+       <h5 class="text-white no-underline hover:underline">{{userName}}</h5>
+       <button class="rounded-md hover:bg-gray-700 dark:bg-gray-800" (click)="logOut()">
+        <fa-icon [icon]="falogout" class="text-[1.3em] hover:scale-110 transition-transform"></fa-icon>
+       </button>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="p-2 rounded-md hover:bg-gray-700 dark:bg-gray-800" (click)="toggleDarkMode()">
+        <fa-icon *ngIf="!DarkMode" [icon]="faMoon" class="text-grey-800"></fa-icon>
+        <fa-icon *ngIf="DarkMode" [icon]="faSun" class="text-yellow-400"></fa-icon>
+      </button>
+    </div>
+  </div>
+  </div>
+</div>
