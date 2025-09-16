@@ -3,10 +3,14 @@ import { FormGroup , FormArray , FormBuilder , FormControl, Validators} from '@a
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { userDto } from '../../model/userDto';
+import { Register as registerService } from '../../service/register';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { faClose , faEye , faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { SellerDto } from '../../model/SellerDto';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, FaIconComponent],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
@@ -16,6 +20,37 @@ export class Register implements OnInit {
  roles = ['user' , 'seller'];
   fb = inject(FormBuilder);
   user!:userDto;
+  seller !: SellerDto;
+  isRegistered ! : boolean;
+  registerationMessage!: string;
+  showRegisterMessage=false;
+  faClose = faClose;
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
+  showpassword = false;
+
+  constructor(private registerService : registerService){}
+
+  closeMessage(){
+    this.showRegisterMessage = false;
+  }
+
+  onFileSelected(event: any) {
+  const file: File = event.target.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const base64String = (reader.result as string).split(',')[1];
+      this.registerationForm.patchValue({
+        brandLogo: base64String
+      });
+    };
+
+    reader.readAsDataURL(file); // read file as base64
+  }
+}
 
   ngOnInit(): void {
     this.registerationForm = this.fb.group({
@@ -69,13 +104,59 @@ export class Register implements OnInit {
     }
   }
   
-      onSubmit(){
-     if(this.registerationForm.valid){
-      this.user.username= this.registerationForm.get('username')?.value;
-      this.user
+  onSubmit(){
+   if(this.registerationForm.valid){
+    if(this.registerationForm.get('role')?.value === 'user'){
+    this.user={
+      username:this.registerationForm.get('username')?.value,
+      password:this.registerationForm.get('password')?.value,
+      address:this.registerationForm.get('address')?.value,
+      role:this.registerationForm.get('role')?.value,
+      phoneNumber:this.registerationForm.get('phoneNumber')?.value,
+    };
+
+    this.registerService.registerUser(this.user).subscribe({
+          next:((response : any) =>{
+            this.registerationMessage = response.message;
+            this.showRegisterMessage = true;
+            if(response.statusCode === 200){
+              this.isRegistered=true;
+              this.registerationForm.reset();
+            }else{
+              this.isRegistered=false;
+            }
+            setTimeout(()=>{this.showRegisterMessage = false} , 5000)
+          })
+        });
+    }
       
-     }else{
-      console.log("Form is not valid");
+     }else if(this.registerationForm.get('role')?.value === 'seller'){
+       const pinCodesArray: string[] = this.DeliveryPinCodes.value;
+      this.seller={
+        name : this.registerationForm.get('name')?.value,
+        roleId : 1,
+        email : this.registerationForm.get('email')?.value,
+        password : this.registerationForm.get('password')?.value,
+        brandName:this.registerationForm.get('brandName')?.value,
+        address : this.registerationForm.get('address')?.value,
+        phoneNumber :this.registerationForm.get('phoneNumber')?.value,
+        imageData : this.registerationForm.get('brandLogo')?.value,
+        delivery_pinCodes : pinCodesArray.join(","),
+        id:0
+      } 
+      this.registerService.registerSeller(this.seller).subscribe({
+        next:((response :any)=>{
+          this.registerationMessage = response.message;
+            this.showRegisterMessage = true;
+            if(response.statusCode === 200){
+              this.isRegistered=true;
+              this.registerationForm.reset();
+            }else{
+              this.isRegistered=false;
+            }
+            setTimeout(()=>{this.showRegisterMessage = false} , 5000)
+        })
+      })
      }
     }
   

@@ -20,17 +20,14 @@ export class Products  {
   constructor(private ProductService: ProductService) {}
 
   ngOnInit(): void {
-    console.log('Fetching products...');
     this.ProductService.getProducts(this.page, this.size).subscribe({
       next: (response) => {
-        console.log('Products fetched successfully:', response);
         this.products = (response.data ?? []).map((p : any)=>({
           ...p,
            image: p.imageBase64 && p.imageBase64.length > 0 
           ? `data:image/jpeg;base64,${p.imageBase64}`
           : null
         }));
-        console.log(this.products);
       },
       error: (err) => {
         console.error('Error fetching products:', err); 

@@ -2,14 +2,15 @@ import { Component } from '@angular/core';
 // import { RouterLink } from '@angular/router';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {faSearch , faUserCircle , faShoppingCart , faMoon ,faSun , faHome , faSignOutAlt} from "@fortawesome/free-solid-svg-icons"
-import { NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Login } from '../login/login';
 import { Auth as authService } from '../../service/auth';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [FontAwesomeModule, NgIf,RouterLink],
+  imports: [FontAwesomeModule, NgIf,RouterLink , AsyncPipe],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
@@ -23,21 +24,22 @@ export class Header {
   DarkMode = false;
   isLoggedIn = false;
   falogout = faSignOutAlt;
-  userName!: string;
+  userName :any;
 
   constructor(private authService : authService){}
 
 
   ngOnInit():void{
-    this.authService.isLoggedIn$.subscribe(status=>{
-      this.isLoggedIn=status;
-    })
-    this.authService.userData$.subscribe(data=>
+      this.authService.userData$.subscribe(data=>
     {
-      this.userName = data;
-      console.log(this.userName , "username")
+      this.userName = data.username;
+      console.log(this.userName);
     }
     )
+        this.authService.isLoggedIn$.subscribe(status=>{
+      this.isLoggedIn=status;
+    })
+   
   }
 
   toggleDarkMode() {

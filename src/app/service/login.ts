@@ -12,14 +12,7 @@ import { ResponseDto } from '../Common/ResponseDto';
 export class Login {
   private http = inject(HttpClient);
   private EncryptapiUrl= "http://localhost:8080/encrypt";
- private loginApiUrl = "http://localhost:8080/user/login";
-  user!:'';
-  role!:'';
 
-  Login(payload: string):Observable<ResponseDto<LoginResponseDto>>{
-    const headers = new HttpHeaders().set('Request-id','1');
-    return this.http.post<ResponseDto<LoginResponseDto>>(this.loginApiUrl , {payload}, {headers , withCredentials:true} )
-  }
 
   encryptData(username:string , password:string):Observable<EncryptedDto>{
     const headers = new HttpHeaders().set('Request-id','1');

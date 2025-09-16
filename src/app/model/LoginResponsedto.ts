@@ -1,6 +1,6 @@
 export interface LoginResponseDto{
 
-    user:string;
+    username:string;
     role:string;
     token:string;
 }

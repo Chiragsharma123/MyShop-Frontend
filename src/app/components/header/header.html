@@ -12,25 +12,29 @@
     </div>
   <div class="flex items-center w-[27%] gap-8 justify-end h-full pr-4 ">
      <div class="flex items-center gap-3 text-orange-500">
-      <fa-icon [icon]="faCart" class="text-[1.3em] hover:scale-110 transition-transform"></fa-icon> 
+      <fa-icon [icon]="faCart" class="text-[1.3em] hover:scale-110 transition-transform" routerLink="/cart"></fa-icon> 
     </div>
-    <div *ngIf="!isLoggedIn" class="flex items-center gap-3 text-white">  
+    <div  class="flex items-center gap-3 text-white">  
       <fa-icon [icon]="faUser" class="text-[1.3em]"></fa-icon>
+      @if (!isLoggedIn) {
       <h5>
         <a routerLink="/login" class="text-white no-underline hover:underline">Sign in</a>
       </h5>
+    }@else if (isLoggedIn) {
+       <h5 class="text-white no-underline hover:underline">{{userName}}</h5>
+    }
       <span>/</span>
+    @if(!isLoggedIn){
       <h5>
         <a routerLink="/register"  class="text-white no-underline hover:underline" >Register</a>
       </h5>
-    </div>
-    <div *ngIf="isLoggedIn" class="flex items-center gap-3 text-white">
-       <fa-icon [icon]="faUser" class="text-[1.3em]"></fa-icon>
-       <h5 class="text-white no-underline hover:underline">{{userName}}</h5>
-       <button class="rounded-md hover:bg-gray-700 dark:bg-gray-800" (click)="logOut()">
+    } @else if(isLoggedIn){
+        <button class="rounded-md hover:bg-gray-700 dark:bg-gray-800" (click)="logOut()">
         <fa-icon [icon]="falogout" class="text-[1.3em] hover:scale-110 transition-transform"></fa-icon>
        </button>
+    }
     </div>
+
     <div class="flex items-center gap-2">
       <button class="p-2 rounded-md hover:bg-gray-700 dark:bg-gray-800" (click)="toggleDarkMode()">
         <fa-icon *ngIf="!DarkMode" [icon]="faMoon" class="text-grey-800"></fa-icon>

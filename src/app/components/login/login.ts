@@ -21,7 +21,7 @@ export class Login {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   showpassword = false;
-  
+  username!:string;
 
 
   constructor(private loginService : loginService , private authService: authService , private router:Router){}
@@ -40,17 +40,7 @@ export class Login {
           {
             next : (response :EncryptedDto) => {
               const EncryptedPayload = response.payload;
-              this.loginService.Login(EncryptedPayload).subscribe({
-                next: (response) =>{
-                  if(response.statusCode===200){
-                  this.authService.login();
-                  this.router.navigate(['/home']);
-                  }
-                  else{
-                    alert(response.message || 'Login Failed');
-                  }
-                },
-              });
+              this.authService.Login(EncryptedPayload)
             },
           }
         )

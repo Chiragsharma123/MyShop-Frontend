@@ -1,6 +1,13 @@
 <div class="max-w-xl mx-auto mt-10 p-6 bg-white shadow-2xl rounded-xl dark:bg-gray-800 dark:text-white border-2 border-gray-300 dark:border-gray-700">
   <h2 class="text-2xl font-bold mb-4">Register</h2>
 
+<div *ngIf="showRegisterMessage" class="relative border p-3 rounded-md mb-4"
+     [ngClass]="isRegistered ? 'border-green-500 bg-green-100 text-green-700' : 'border-red-500 bg-red-100 text-red-700'">
+  <span>{{ registerationMessage }}</span>
+  <button type="button"  class="absolute top-1 right-2 text-xl font-bold leading-none focus:outline-none" (click)="closeMessage()">
+    <fa-icon [icon]="faClose" class="text-gray-500 hover:text-gray-700"></fa-icon></button>
+</div>
+
   <form [formGroup]="registerationForm" (ngSubmit)="onSubmit()">
 
     <div class="mb-4">
@@ -18,7 +25,12 @@
       </div>
       <div class="mb-4">
         <label>Password</label>
-        <input type="password" formControlName="password" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="create password" />
+         <div class="relative flex item-center">
+        <input [type]="showpassword? 'text': 'password'" formControlName="password" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="create password" />
+       <button type="button" (click)="showpassword = !showpassword" class="absolute right-3 text-gray-500 hover:text-gray-700 p-2">
+            <fa-icon [icon]="showpassword? faEyeSlash : faEye"></fa-icon>
+        </button> 
+      </div>
       </div>
       <div class="mb-4">
         <label>Address</label>
@@ -32,6 +44,10 @@
 
 
     <div *ngIf="registerationForm.get('role')?.value === 'seller'" class="bg-white text-black dark:bg-gray-800 dark:text-white">
+        <div class="mb-4">
+        <label>Name</label>
+        <input type="text" formControlName="name" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="Enter Brand Name"/>
+      </div>
       <div class="mb-4">
         <label>Email</label>
         <input type="email" formControlName="email" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="enter email address"/>
@@ -54,7 +70,7 @@
       </div>
       <div class="mb-4">
         <label>Brand Logo</label>
-        <input type="file" formControlName="brandLogo" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="Provide logo in file format"/>
+        <input type="file" formControlName="brandLogo" class="w-full border rounded p-2 bg-white text-black dark:bg-gray-800 dark:text-white" placeholder="Provide logo in file format" (change)="onFileSelected($event)"/>
       </div>
 
       <div class="mb-4">
